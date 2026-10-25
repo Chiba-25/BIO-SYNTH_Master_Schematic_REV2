@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIO-SYNTH Rev 2.0 — Pin-Level Electrical Schematic Diagram</title>
+<style>
+  body {
+    background: #090d16;
+    color: #e2e8f0;
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .header-bar {
+    max-width: 1560px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid #1e293b;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+  h1 { font-size: 18px; margin: 0; color: #38bdf8; letter-spacing: 0.5px; }
+  .meta { font-size: 12px; color: #94a3b8; }
+  .sheet-wrapper {
+    background: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 6px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.65);
+    max-width: 1560px;
+    width: 100%;
+    overflow: auto;
+  }
+  svg { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+  <h1>BIO-SYNTH REV 2.0 — PIN-LEVEL ELECTRICAL SCHEMATIC & NETLIST DIAGRAM</h1>
+  <div class="meta">DRC VERIFIED | +24V / +12V / +5.1V / +3.3V RAILS | ALL PASSIVES & PINOUTS EXPLICIT</div>
+</div>
+
+<div class="sheet-wrapper">
+<svg viewBox="0 0 1560 1120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .grid-line { stroke: #1e293b; stroke-width: 0.5; }
+      .comp-box { fill: #090d16; stroke: #64748b; stroke-width: 1.5; }
+      .ic-box { fill: #111827; stroke: #38bdf8; stroke-width: 1.5; }
+      .zone-box { fill: none; stroke: #334155; stroke-width: 1; stroke-dasharray: 6 4; }
+      .zone-lbl { font-family: monospace; font-size: 11px; font-weight: bold; fill: #64748b; }
+      .hdr { font-family: sans-serif; font-size: 11.5px; font-weight: bold; fill: #f8fafc; }
+      .sub { font-family: monospace; font-size: 9px; fill: #94a3b8; }
+      .pin { font-family: monospace; font-size: 9px; fill: #cbd5e1; }
+      .net { font-family: monospace; font-size: 8.5px; font-weight: bold; fill: #38bdf8; }
+      .val { font-family: monospace; font-size: 8.5px; fill: #fbbf24; }
+      .w-24v { stroke: #ef4444; stroke-width: 2.5; fill: none; }
+      .w-12v { stroke: #f97316; stroke-width: 2; fill: none; }
+      .w-5v  { stroke: #eab308; stroke-width: 2; fill: none; }
+      .w-3v3 { stroke: #ec4899; stroke-width: 1.5; fill: none; }
+      .w-gnd { stroke: #0ea5e9; stroke-width: 2; stroke-dasharray: 5 3; fill: none; }
+      .w-sig { stroke: #10b981; stroke-width: 1.5; fill: none; }
+      .w-bus { stroke: #a855f7; stroke-width: 1.5; fill: none; }
+      .sym { stroke: #e2e8f0; stroke-width: 1.5; fill: none; }
+      .node { fill: #f8fafc; }
+    </style>
+
+    <!-- Resistor Symbol Horizontal (40px wide) -->
+    <g id="res-h">
+      <polyline points="0,0 8,0 11,-5 16,5 21,-5 26,5 29,0 40,0" class="sym"/>
+    </g>
+    <!-- Resistor Symbol Vertical (40px tall) -->
+    <g id="res-v">
+      <polyline points="0,0 0,8 -5,11 5,16 -5,21 5,26 0,29 0,40" class="sym"/>
+    </g>
+    <!-- Fuse Symbol Horizontal (36px wide) -->
+    <g id="fuse-h">
+      <rect x="6" y="-5" width="24" height="10" fill="#090d16" stroke="#fbbf24" stroke-width="1.3"/>
+      <line x1="0" y1="0" x2="36" y2="0" stroke="#fbbf24" stroke-width="1.3"/>
+    </g>
+    <!-- Diode Symbol Right-Pointing -->
+    <g id="diode-r">
+      <polygon points="0,-7 0,7 12,0" fill="#38bdf8" stroke="#38bdf8" stroke-width="1.2"/>
+      <line x1="12" y1="-7" x2="12" y2="7" stroke="#38bdf8" stroke-width="2"/>
+    </g>
+    <!-- Flyback Diode Symbol Up-Pointing (Cathode Up) -->
+    <g id="diode-u">
+      <polygon points="-6,6 6,6 0,-6" fill="#fbbf24" stroke="#fbbf24" stroke-width="1.2"/>
+      <line x1="-6" y1="-6" x2="6" y2="-6" stroke="#fbbf24" stroke-width="2"/>
+    </g>
+    <!-- Ground Symbol -->
+    <g id="gnd-sym">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#0ea5e9" stroke-width="1.5"/>
+      <line x1="-8" y1="8" x2="8" y2="8" stroke="#0ea5e9" stroke-width="1.5"/>
+      <line x1="-5" y1="12" x2="5" y2="12" stroke="#0ea5e9" stroke-width="1.5"/>
+      <line x1="-2" y1="16" x2="2" y2="16" stroke="#0ea5e9" stroke-width="1.5"/>
+    </g>
+  </defs>
+
+  <!-- Drawing Frame -->
+  <rect x="10" y="10" width="1540" height="1100" fill="none" stroke="#475569" stroke-width="2"/>
+
+  <!-- ================= LEGEND BAR ================= -->
+  <g transform="translate(25, 22)">
+    <rect x="0" y="0" width="1510" height="34" rx="4" fill="#1e293b"/>
+    <text x="14" y="21" class="hdr" fill="#38bdf8">NET COLOR KEY:</text>
+    <line x1="135" y1="17" x2="170" y2="17" class="w-24v"/><text x="176" y="20" class="pin">+24V Primary (12 AWG)</text>
+    <line x1="330" y1="17" x2="365" y2="17" class="w-12v"/><text x="371" y="20" class="pin">+12V Aux (18 AWG)</text>
+    <line x1="510" y1="17" x2="545" y2="17" class="w-5v"/><text x="551" y="20" class="pin">+5.1V Logic (20 AWG)</text>
+    <line x1="700" y1="17" x2="735" y2="17" class="w-3v3"/><text x="741" y="20" class="pin">+3.3V CMOS (22 AWG)</text>
+    <line x1="890" y1="17" x2="925" y2="17" class="w-gnd"/><text x="931" y="20" class="pin">STAR GND (12-18 AWG)</text>
+    <line x1="1095" y1="17" x2="1130" y2="17" class="w-sig"/><text x="1136" y="20" class="pin">GPIO / Control</text>
+    <line x1="1260" y1="17" x2="1295" y2="17" class="w-bus"/><text x="1301" y="20" class="pin">RS485 / UART / I2C Bus</text>
+  </g>
+
+  <!-- ================= ZONE 1 & 2: SOLAR, MPPT & BATTERY STORAGE ================= -->
+  <rect x="25" y="70" width="960" height="175" class="zone-box"/>
+  <text x="35" y="86" class="zone-lbl">ZONE 1 & 2: SOLAR INFEED, ISOLATION, MPPT CHARGE CONTROLLER & 24V VRLA STORAGE</text>
+
+  <!-- Solar Array -->
+  <g transform="translate(40, 100)">
+    <rect x="0" y="0" width="220" height="125" rx="4" class="comp-box"/>
+    <text x="10" y="18" class="hdr" fill="#4ade80">PV1: SOLAR ARRAY (24V)</text>
+    <text x="10" y="33" class="sub">Opt A: 2x100W Series (Vmp 36.4V)</text>
+    <text x="10" y="46" class="sub">Opt B: 1x300W 24V (Vmp 32.0V)</text>
+    <line x1="10" y1="56" x2="210" y2="56" stroke="#334155"/>
+    <text x="10" y="74" class="pin">Voc: 38.5V - 43.4V | Imp: 5.5A - 9.4A</text>
+    <text x="155" y="96" class="pin" fill="#ef4444">PV(+) [1]</text>
+    <text x="155" y="116" class="pin" fill="#0ea5e9">PV(-) [2]</text>
+  </g>
+
+  <!-- QF1: 2P 16A DC MCB -->
+  <g transform="translate(300, 165)">
+    <rect x="0" y="0" width="85" height="55" rx="3" class="comp-box" stroke="#fb923c"/>
+    <text x="42" y="16" class="hdr" text-anchor="middle" fill="#fb923c">QF1: 16A</text>
+    <text x="42" y="29" class="sub" text-anchor="middle">2P DC MCB</text>
+    <text x="42" y="44" class="val" text-anchor="middle">Solar Isolator</text>
+  </g>
+  <path d="M 260 192 L 300 192" class="w-24v"/>
+  <path d="M 260 212 L 300 212" class="w-gnd"/>
+
+  <!-- U1: PowMr 24V Charge Controller -->
+  <g transform="translate(430, 100)">
+    <rect x="0" y="0" width="215" height="125" rx="4" class="ic-box"/>
+    <text x="10" y="18" class="hdr">U1: POWMR 24V 30A SCC</text>
+    <text x="10" y="32" class="sub">Bulk: 28.8V | Float: 27.4V</text>
+    <text x="10" y="96" class="pin">1: PV(+)</text>
+    <text x="10" y="116" class="pin">2: PV(-)</text>
+    <text x="135" y="65" class="pin" fill="#ef4444">BATT(+) :3</text>
+    <text x="135" y="116" class="pin" fill="#0ea5e9">BATT(-) :4</text>
+  </g>
+  <path d="M 385 192 L 430 192" class="w-24v"/>
+  <path d="M 385 212 L 430 212" class="w-gnd"/>
+
+  <!-- F1: 30A ANL Fuse on Battery Positive -->
+  <use href="#fuse-h" x="680" y="162"/>
+  <text x="698" y="150" class="val" text-anchor="middle">F1: 30A ANL</text>
+  <path d="M 645 162 L 680 162" class="w-24v"/>
+  <path d="M 716 162 L 765 162" class="w-24v"/>
+  <circle cx="740" cy="162" r="3.5" class="node"/>
+  <text x="740" y="148" class="net" text-anchor="middle">BATT_24V</text>
+
+  <!-- BT1: 24V 50Ah VRLA Battery Bank -->
+  <g transform="translate(765, 100)">
+    <rect x="0" y="0" width="205" height="125" rx="4" class="comp-box"/>
+    <text x="10" y="18" class="hdr">BT1: 24V 50Ah VRLA BANK</text>
+    <text x="10" y="32" class="sub">2x 12V 50Ah in Series (1200Wh)</text>
+    <text x="10" y="65" class="pin" fill="#ef4444">[+] 24V Terminal</text>
+    <text x="10" y="90" class="sub">12V #1 (-) ---&gt; 12V #2 (+)</text>
+    <text x="10" y="116" class="pin" fill="#0ea5e9">[-] Common GND</text>
+  </g>
+  <path d="M 645 212 L 765 212" class="w-gnd"/>
+
+  <!-- ================= ZONE 3: AC INFEED & DIODE-OR ARBITRATION ================= -->
+  <rect x="1000" y="70" width="535" height="260" class="zone-box"/>
+  <text x="1010" y="86" class="zone-lbl">ZONE 3: 220V AC INFEED, SMPS & IDEAL DIODE-OR ARBITRATION</text>
+
+  <!-- AC Mains & PSU1 -->
+  <g transform="translate(1015, 100)">
+    <rect x="0" y="0" width="235" height="115" rx="4" class="comp-box"/>
+    <text x="10" y="18" class="hdr" fill="#38bdf8">PSU1: MEANWELL 24V 20A</text>
+    <text x="10" y="32" class="sub">480W SMPS (220V AC Input)</text>
+    <text x="10" y="50" class="val">SVR1 Trimmed: 25.2V DC</text>
+    <text x="10" y="72" class="pin">L / N / PE (220V AC Plug)</text>
+    <text x="155" y="90" class="pin" fill="#ef4444">+V (25.2V)</text>
+    <text x="155" y="108" class="pin" fill="#0ea5e9">-V (GND)</text>
+  </g>
+
+  <!-- U2: 220V AC Optocoupler Board -->
+  <g transform="translate(1275, 100)">
+    <rect x="0" y="0" width="245" height="115" rx="4" class="ic-box" stroke="#fbbf24"/>
+    <text x="10" y="18" class="hdr" fill="#fbbf24">U2: 220V AC OPTOCOUPLER</text>
+    <text x="10" y="32" class="sub">Grid Presence Detector (PC817)</text>
+    <text x="10" y="55" class="pin">AC_IN: From 220V L/N</text>
+    <text x="10" y="78" class="val">R1: 10k Pull-up to RPi +3.3V</text>
+    <text x="10" y="100" class="pin" fill="#10b981">OUT --&gt; RPi4 GPIO 17 (Pin 11)</text>
+  </g>
+
+  <!-- Ideal Diode 1 (Battery Leg) & Ideal Diode 2 (SMPS Leg) -->
+  <g transform="translate(1015, 235)">
+    <rect x="0" y="0" width="235" height="80" rx="4" class="comp-box" stroke="#4ade80"/>
+    <text x="10" y="18" class="hdr" fill="#4ade80">D1 & D2: 65A IDEAL DIODES</text>
+    <text x="10" y="34" class="pin">D1 Anode: BATT_24V (24.0-28.8V)</text>
+    <text x="10" y="50" class="pin">D2 Anode: SMPS_24V (25.2V Set)</text>
+    <text x="10" y="68" class="val">Common Cathode (Vd = 0.02V)</text>
+    <use href="#diode-r" x="205" y="35"/>
+    <use href="#diode-r" x="205" y="55"/>
+  </g>
+  <!-- Wire from BATT_24V tap to Ideal Diode 1 -->
+  <path d="M 740 162 L 740 265 L 1015 265" class="w-24v"/>
+  <!-- Wire from PSU1 +V to Ideal Diode 2 -->
+  <path d="M 1250 190 L 1262 190 L 1262 285 L 1015 285" class="w-24v"/>
+
+  <!-- QF2: 2P 30A Master DC Breaker -->
+  <g transform="translate(1295, 235)">
+    <rect x="0" y="0" width="225" height="80" rx="4" class="comp-box" stroke="#ef4444"/>
+    <text x="112" y="20" class="hdr" text-anchor="middle" fill="#ef4444">QF2: 2P 30A MASTER MCB</text>
+    <text x="112" y="36" class="sub" text-anchor="middle">Main DC Bus Load Disconnect</text>
+    <text x="112" y="55" class="pin" text-anchor="middle">IN: D1/D2 Cathode | OUT: +24V_BUS</text>
+    <text x="112" y="70" class="val" text-anchor="middle">Trips @ &gt;30A Continuous</text>
+  </g>
+  <path d="M 1250 275 L 1295 275" class="w-24v"/>
+
+  <!-- ================= MASTER +24V & STAR GND BUSBARS ================= -->
+  <rect x="25" y="350" width="1510" height="22" rx="3" fill="#450a0a" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="38" y="365" class="hdr" fill="#fecaca">+24V_BUS — PRIMARY HIGH-CURRENT COPPER BUSBAR (12 AWG DISTRIBUTION)</text>
+  <path d="M 1407 315 L 1407 350" class="w-24v"/>
+
+  <rect x="25" y="382" width="1510" height="20" rx="3" fill="#082f49" stroke="#0ea5e9" stroke-width="1.5"/>
+  <text x="38" y="396" class="hdr" fill="#bae6fd">GND_STAR — COMMON SYSTEM STAR GROUND BUSBAR (CHASSIS BONDED)</text>
+  <path d="M 865 225 L 865 382" class="w-gnd"/>
+  <use href="#gnd-sym" x="1500" y="402"/>
+
+  <!-- ================= ZONE 4: STEP-DOWN VOLTAGE REGULATORS ================= -->
+  <!-- F2: 10A Fuse + U3: 24V-to-12V 10A Buck -->
+  <path d="M 110 372 L 110 435" class="w-24v"/>
+  <use href="#fuse-h" x="125" y="435"/>
+  <text x="143" y="424" class="val" text-anchor="middle">F2: 10A</text>
+  <path d="M 110 435 L 125 435" class="w-24v"/>
+  <path d="M 161 435 L 185 435" class="w-24v"/>
+
+  <g transform="translate(185, 415)">
+    <rect x="0" y="0" width="230" height="75" rx="4" class="ic-box" stroke="#f97316"/>
+    <text x="10" y="18" class="hdr" fill="#fb923c">U3: 24V-TO-12V 10A BUCK</text>
+    <text x="10" y="32" class="sub">120W Industrial Step-Down (90% Eff)</text>
+    <text x="10" y="52" class="pin">1: IN(+24V) | 2: IN(GND)</text>
+    <text x="10" y="67" class="pin" fill="#f97316">3: OUT(+12V) | 4: OUT(GND)</text>
+  </g>
+  <path d="M 220 402 L 220 415" class="w-gnd"/>
+
+  <!-- +12V Auxiliary Busbar -->
+  <rect x="25" y="510" width="460" height="18" rx="3" fill="#431407" stroke="#f97316"/>
+  <text x="35" y="523" class="hdr" fill="#ffedd5">+12V_AUX BUS (18 AWG — BLOWER, PUMP, NPK, PROX)</text>
+  <path d="M 300 490 L 300 510" class="w-12v"/>
+
+  <!-- F3: 5A Fuse + U4: 24V-to-5.1V 5A Buck -->
+  <path d="M 550 372 L 550 435" class="w-24v"/>
+  <use href="#fuse-h" x="565" y="435"/>
+  <text x="583" y="424" class="val" text-anchor="middle">F3: 5A</text>
+  <path d="M 550 435 L 565 435" class="w-24v"/>
+  <path d="M 601 435 L 625 435" class="w-24v"/>
+
+  <g transform="translate(625, 415)">
+    <rect x="0" y="0" width="240" height="75" rx="4" class="ic-box" stroke="#eab308"/>
+    <text x="10" y="18" class="hdr" fill="#fde047">U4: 24V-TO-5.1V 5A BUCK</text>
+    <text x="10" y="32" class="sub">25.5W Regulated Logic Supply (88%)</text>
+    <text x="10" y="52" class="pin">1: IN(+24V) | 2: IN(GND)</text>
+    <text x="10" y="67" class="pin" fill="#eab308">3: OUT(+5.1V) | 4: OUT(GND)</text>
+  </g>
+  <path d="M 660 402 L 660 415" class="w-gnd"/>
+
+  <!-- +5.1V Logic Busbar -->
+  <rect x="520" y="510" width="520" height="18" rx="3" fill="#422006" stroke="#eab308"/>
+  <text x="530" y="523" class="hdr" fill="#fef08a">+5V_LOGIC BUS (20 AWG — RPi 4, ESP32, MAX485, GAS, BTS7960)</text>
+  <path d="M 745 490 L 745 510" class="w-5v"/>
+
+  <!-- ================= ZONE 5: HIGH-POWER & 12V ACTUATORS ================= -->
+  <!-- F4: 25A Slow-Blow Fuse + U5: BTS7960 43A H-Bridge -->
+  <path d="M 1140 372 L 1140 435" class="w-24v"/>
+  <use href="#fuse-h" x="1155" y="435"/>
+  <text x="1173" y="424" class="val" text-anchor="middle">F4: 25A SB</text>
+  <path d="M 1140 435 L 1155 435" class="w-24v"/>
+  <path d="M 1191 435 L 1215 435" class="w-24v"/>
+
+  <g transform="translate(1215, 415)">
+    <rect x="0" y="0" width="320" height="145" rx="4" class="ic-box" stroke="#ef4444"/>
+    <text x="12" y="20" class="hdr" fill="#f87171">U5: BTS7960 43A H-BRIDGE DRIVER</text>
+    <text x="12" y="34" class="sub">With 2.5s Firmware PWM Ramp Soft-Start</text>
+    <text x="12" y="54" class="pin" fill="#ef4444">Power Header: B+ (+24V) | B- (GND_STAR)</text>
+    <text x="12" y="70" class="pin" fill="#eab308">Pin 7 (VCC): +5V_LOGIC | Pin 8: GND</text>
+    <text x="12" y="88" class="pin" fill="#10b981">Pin 1 (RPWM): &lt;-- ESP32 GPIO 32 (via 220R)</text>
+    <text x="12" y="104" class="pin" fill="#10b981">Pin 2 (LPWM): &lt;-- ESP32 GPIO 33 (via 220R)</text>
+    <text x="12" y="120" class="pin" fill="#10b981">Pin 3,4 (R_EN/L_EN): &lt;-- ESP32 GPIO 27</text>
+    <text x="12" y="136" class="val">R2: 10k Pull-Down on R_EN/L_EN to GND</text>
+  </g>
+  <path d="M 1250 402 L 1250 415" class="w-gnd"/>
+  <path d="M 1040 519 L 1215 519" class="w-5v"/>
+
+  <!-- M1: 0.5 HP 24V DC Gear Motor -->
+  <g transform="translate(1215, 595)">
+    <rect x="0" y="0" width="320" height="85" rx="4" class="comp-box" stroke="#ef4444"/>
+    <text x="160" y="22" class="hdr" text-anchor="middle">M1: 0.5 HP 24V DC GEAR MOTOR</text>
+    <text x="160" y="38" class="sub" text-anchor="middle">15.0A Rated (360W) | 3-4 RPM Helical Agitator</text>
+    <text x="160" y="54" class="val" text-anchor="middle">C1: 100nF Ceramic Snubber Cap across M+ / M-</text>
+    <text x="160" y="72" class="pin" fill="#ef4444" text-anchor="middle">12 AWG Silicone Leads to BTS7960 M+ / M-</text>
+  </g>
+  <path d="M 1340 560 L 1340 595" class="w-24v"/>
+  <path d="M 1410 560 L 1410 595" class="w-gnd"/>
+
+  <!-- K1: Optocoupler Relay Module (CH1 & CH2) -->
+  <g transform="translate(25, 560)">
+    <rect x="0" y="0" width="250" height="125" rx="4" class="ic-box"/>
+    <text x="10" y="18" class="hdr">K1: OPTO RELAY MODULE</text>
+    <text x="10" y="32" class="sub">JD-VCC Isolated Actuator Switching</text>
+    <text x="10" y="52" class="pin">COM1 / COM2: Tied to +12V_AUX</text>
+    <text x="10" y="70" class="pin" fill="#10b981">IN1 (Blower): &lt;-- ESP32 GPIO 25</text>
+    <text x="10" y="86" class="pin" fill="#10b981">IN2 (Pump)  : &lt;-- ESP32 GPIO 26</text>
+    <text x="10" y="106" class="pin" fill="#f97316">NO1 --&gt; M2 (+) | NO2 --&gt; M3 (+)</text>
+  </g>
+  <path d="M 90 528 L 90 560" class="w-12v"/>
+
+  <!-- M2: 9733 Blower + D3 Flyback Diode -->
+  <g transform="translate(25, 725)">
+    <rect x="0" y="0" width="120" height="90" rx="4" class="comp-box"/>
+    <text x="60" y="20" class="hdr" text-anchor="middle">M2: BLOWER</text>
+    <text x="60" y="35" class="sub" text-anchor="middle">9733 12V 0.8A</text>
+    <text x="60" y="52" class="val" text-anchor="middle">D3: 1N5408</text>
+    <text x="60" y="66" class="val" text-anchor="middle">Flyback Diode</text>
+    <use href="#diode-u" x="105" y="45"/>
+  </g>
+  <path d="M 75 685 L 75 725" class="w-12v"/>
+
+  <!-- M3: 12V Mist Pump + D4 Flyback Diode -->
+  <g transform="translate(155, 725)">
+    <rect x="0" y="0" width="120" height="90" rx="4" class="comp-box"/>
+    <text x="60" y="20" class="hdr" text-anchor="middle">M3: MIST PUMP</text>
+    <text x="60" y="35" class="sub" text-anchor="middle">Diaphragm 12V 1.8A</text>
+    <text x="60" y="52" class="val" text-anchor="middle">D4: 1N5408</text>
+    <text x="60" y="66" class="val" text-anchor="middle">Flyback Diode</text>
+    <use href="#diode-u" x="105" y="45"/>
+  </g>
+  <path d="M 215 685 L 215 725" class="w-12v"/>
+
+  <!-- ================= ZONE 6: COMPUTE, MODBUS & SENSING ================= -->
+  <!-- Raspberry Pi 4 Master HMI -->
+  <g transform="translate(305, 560)">
+    <rect x="0" y="0" width="235" height="195" rx="4" class="ic-box" stroke="#4ade80"/>
+    <text x="12" y="20" class="hdr" fill="#4ade80">U6: RASPBERRY PI 4 (4GB)</text>
+    <text x="12" y="34" class="sub">Master HMI & MySQL Telemetry Server</text>
+    <line x1="10" y1="42" x2="225" y2="42" stroke="#334155"/>
+    <text x="12" y="58" class="pin" fill="#eab308">Pin 2,4 (5V) : &lt;-- +5V_LOGIC (5.1V)</text>
+    <text x="12" y="74" class="pin" fill="#0ea5e9">Pin 6 (GND)  : &lt;-- GND_STAR</text>
+    <text x="12" y="92" class="pin" fill="#ec4899">Pin 1 (3.3V) : --&gt; R1 (10k) Pull-Up</text>
+    <text x="12" y="108" class="pin" fill="#10b981">Pin 11 (GPIO17): &lt;-- U2 AC_SENSE</text>
+    <text x="12" y="128" class="pin">DSI/HDMI     : --&gt; 10" Touch Screen</text>
+    <text x="12" y="148" class="pin" fill="#a855f7">USB3 (/dev/ttyUSB0): Data-Only Link</text>
+    <text x="12" y="164" class="val">Note: Cut USB +5V VBUS wire to avoid</text>
+    <text x="12" y="178" class="val">back-feeding +5.1V buck rail.</text>
+  </g>
+  <path d="M 535 528 L 535 560" class="w-5v"/>
+
+  <!-- ESP32 Slave Microcontroller -->
+  <g transform="translate(585, 560)">
+    <rect x="0" y="0" width="285" height="245" rx="4" class="ic-box" stroke="#38bdf8"/>
+    <text x="12" y="20" class="hdr" fill="#38bdf8">U7: ESP32-WROOM-32D SLAVE NODE</text>
+    <text x="12" y="34" class="sub">Real-Time Control & Sensor Acquisition</text>
+    <line x1="10" y1="42" x2="275" y2="42" stroke="#334155"/>
+    <text x="12" y="58" class="pin" fill="#eab308">VIN (Pin 38) : &lt;-- +5V_LOGIC (5.1V)</text>
+    <text x="12" y="74" class="pin" fill="#ec4899">3V3 (Pin 1)  : --&gt; +3.3V Pull-Up Rail</text>
+    <text x="12" y="90" class="pin" fill="#0ea5e9">GND (Pin 32) : &lt;-- GND_STAR</text>
+    <text x="12" y="110" class="pin" fill="#a855f7">GPIO 16 (RX2): &lt;-- MAX485 RO (3.3V Scaled)</text>
+    <text x="12" y="126" class="pin" fill="#a855f7">GPIO 17 (TX2): --&gt; MAX485 DI</text>
+    <text x="12" y="142" class="pin" fill="#10b981">GPIO 4 (DIR) : --&gt; MAX485 DE + /RE</text>
+    <text x="12" y="160" class="pin" fill="#10b981">GPIO 25, 26  : --&gt; K1 Relay IN1, IN2</text>
+    <text x="12" y="176" class="pin" fill="#10b981">GPIO 32, 33  : --&gt; BTS7960 RPWM, LPWM</text>
+    <text x="12" y="192" class="pin" fill="#10b981">GPIO 27 (EN) : --&gt; BTS7960 R_EN + L_EN</text>
+    <text x="12" y="208" class="pin" fill="#a855f7">GPIO 21, 22  : &lt;--&gt; I2C Gas Hub (SDA/SCL)</text>
+    <text x="12" y="224" class="pin" fill="#10b981">GPIO 34, 35  : &lt;-- PC817 Sieve Optos</text>
+  </g>
+  <path d="M 725 528 L 725 560" class="w-5v"/>
+
+  <!-- USB-UART Link -->
+  <path d="M 540 695 L 585 695" class="w-bus"/>
+  <text x="562" y="688" class="net" text-anchor="middle">USB</text>
+
+  <!-- U8: MAX485 Transceiver + Level Divider + 120R Termination -->
+  <g transform="translate(915, 560)">
+    <rect x="0" y="0" width="275" height="190" rx="4" class="ic-box" stroke="#a855f7"/>
+    <text x="12" y="20" class="hdr" fill="#c084fc">U8: MAX485CSA TRANSCEIVER</text>
+    <text x="12" y="34" class="sub">Half-Duplex RS485 + 5V-to-3.3V Scaling</text>
+    <line x1="10" y1="42" x2="265" y2="42" stroke="#334155"/>
+    <text x="12" y="58" class="pin" fill="#eab308">Pin 8 (VCC): +5V_LOGIC | Pin 5: GND</text>
+    <text x="12" y="76" class="pin">Pin 1 (RO) : --&gt; R3 (10k) --&gt; GPIO 16</text>
+    <text x="12" y="92" class="val">R4 (20k): GPIO 16 to GND (3.33V Max)</text>
+    <text x="12" y="110" class="pin">Pin 2 (/RE) + Pin 3 (DE): &lt;-- GPIO 4</text>
+    <text x="12" y="126" class="val">R5 (10k): Pull-Down on DE/RE to GND</text>
+    <text x="12" y="144" class="pin">Pin 4 (DI) : &lt;-- ESP32 GPIO 17 (TX2)</text>
+    <text x="12" y="162" class="pin" fill="#c084fc">Pin 6 (A+) / Pin 7 (B-): Differential</text>
+    <text x="12" y="178" class="val">R_term: 120 Ohm across Pin 6 &amp; Pin 7</text>
+  </g>
+  <path d="M 870 665 L 915 665" class="w-bus"/>
+  <path d="M 870 682 L 915 682" class="w-bus"/>
+  <path d="M 870 698 L 915 698" class="w-sig"/>
+
+  <!-- 7-in-1 RS485 NPK Probe -->
+  <g transform="translate(915, 785)">
+    <rect x="0" y="0" width="275" height="110" rx="4" class="comp-box" stroke="#a855f7"/>
+    <text x="12" y="20" class="hdr" fill="#38bdf8">SENS1: 7-IN-1 RS485 NPK PROBE</text>
+    <text x="12" y="36" class="sub">Modbus RTU Slave (9600 8N1)</text>
+    <text x="12" y="56" class="pin" fill="#f97316">1 (Brown) : +12V_AUX Rail</text>
+    <text x="12" y="72" class="pin" fill="#0ea5e9">2 (Black) : GND_STAR</text>
+    <text x="12" y="88" class="pin" fill="#eab308">3 (Yellow): RS485 A(+) --&gt; U8 Pin 6</text>
+    <text x="12" y="102" class="pin" fill="#38bdf8">4 (Blue)  : RS485 B(-) --&gt; U8 Pin 7</text>
+  </g>
+  <path d="M 1050 750 L 1050 785" class="w-bus"/>
+
+  <!-- Sieve Sensors + PC817 Optocoupler Isolation Stage -->
+  <g transform="translate(305, 835)">
+    <rect x="0" y="0" width="250" height="135" rx="4" class="ic-box" stroke="#10b981"/>
+    <text x="12" y="20" class="hdr" fill="#34d399">U9: SIEVE PROXIMITY OPTOS</text>
+    <text x="12" y="34" class="sub">Dual PC817 12V-to-3.3V Isolator</text>
+    <text x="12" y="54" class="pin" fill="#f97316">Inductive / Capacitive Prox (+12V)</text>
+    <text x="12" y="70" class="val">R_led1, R_led2: 1k Ohm Series to Anode</text>
+    <text x="12" y="88" class="val">R6, R7: 10k Pull-Ups to ESP32 +3.3V</text>
+    <text x="12" y="106" class="pin" fill="#10b981">OPTO1_OUT --&gt; ESP32 GPIO 34</text>
+    <text x="12" y="122" class="pin" fill="#10b981">OPTO2_OUT --&gt; ESP32 GPIO 35</text>
+  </g>
+  <path d="M 555 880 L 620 880 L 620 805" class="w-sig"/>
+
+  <!-- I2C Headspace Gas Sensor Hub -->
+  <g transform="translate(585, 835)">
+    <rect x="0" y="0" width="285" height="135" rx="4" class="comp-box" stroke="#38bdf8"/>
+    <text x="12" y="20" class="hdr" fill="#38bdf8">SENS2: HEADSPACE GAS HUB</text>
+    <text x="12" y="34" class="sub">CH4, O2, CO2 Array + 16-Bit I2C ADC</text>
+    <text x="12" y="56" class="pin" fill="#eab308">Heater VCC : +5V_LOGIC (0.55A)</text>
+    <text x="12" y="72" class="pin" fill="#ec4899">Logic VDD  : ESP32 +3.3V</text>
+    <text x="12" y="90" class="val">R8, R9: 4.7k I2C Pull-Ups to +3.3V</text>
+    <text x="12" y="108" class="pin" fill="#a855f7">SDA --&gt; ESP32 GPIO 21</text>
+    <text x="12" y="124" class="pin" fill="#a855f7">SCL --&gt; ESP32 GPIO 22</text>
+  </g>
+  <path d="M 725 805 L 725 835" class="w-bus"/>
+
+  <!-- ================= TITLE BLOCK (BOTTOM RIGHT) ================= -->
+  <g transform="translate(1215, 725)">
+    <rect x="0" y="0" width="320" height="245" rx="4" fill="#111827" stroke="#475569" stroke-width="1.5"/>
+    <text x="14" y="24" class="hdr" fill="#38bdf8">ENGINEERING REVISION NOTES</text>
+    <line x1="10" y1="32" x2="310" y2="32" stroke="#334155"/>
+    <text x="14" y="50" class="pin">1. RPi GPIO 17 handles AC_SENSE; ESP32</text>
+    <text x="14" y="63" class="pin">   GPIO 17 dedicated to UART2_TX.</text>
+    <text x="14" y="82" class="pin">2. MAX485 RO scaled 5V-&gt;3.3V via 10k/20k</text>
+    <text x="14" y="95" class="pin">   divider; DE+/RE driven by GPIO 4.</text>
+    <text x="14" y="114" class="pin">3. GPIO 34/35 isolated via PC817 with</text>
+    <text x="14" y="127" class="pin">   external 10k pull-ups to +3.3V.</text>
+    <text x="14" y="146" class="pin">4. 1N5408 flyback diodes fitted across</text>
+    <text x="14" y="159" class="pin">   Blower (M2) &amp; Mist Pump (M3).</text>
+    <text x="14" y="178" class="pin">5. MeanWell SMPS trimmed to 25.2V for</text>
+    <text x="14" y="191" class="pin">   lossless Solar/Battery priority.</text>
+    <line x1="10" y1="205" x2="310" y2="205" stroke="#334155"/>
+    <text x="14" y="222" class="val">PROJECT: BIO-SYNTH AUTONOMOUS COMPOSTER</text>
+    <text x="14" y="236" class="sub">DWG: MASTER-SCHEM-REV2.0 | SCALE: NTS</text>
+  </g>
+
+  <!-- Bottom Safety Banner -->
+  <rect x="25" y="1000" width="1510" height="85" rx="4" fill="#1e293b" stroke="#334155"/>
+  <text x="40" y="1025" class="hdr" fill="#fbbf24">HARDWARE SAFETY &amp; COMMISSIONING CHECKLIST:</text>
+  <text x="40" y="1045" class="pin">• Verify 25.2V output on PSU1 before connecting to Ideal Diode D2. Connect Battery Bank (BT1) to U1 SCC BEFORE connecting Solar Array (PV1) so auto-detect locks onto 24V mode.</text>
+  <text x="40" y="1062" class="pin">• Measure 5.10V ± 0.05V on U4 Buck output and 12.0V ± 0.1V on U3 Buck output BEFORE plugging in Raspberry Pi 4 (U6) or ESP32 (U7).</text>
+  <text x="40" y="1079" class="pin">• Ensure BTS7960 firmware soft-start ramps PWM over 2500 ms (0% -&gt; 100%) to keep 0.5 HP motor startup current below 20A.</text>
+</svg>
+</div>
+
+</body>
+</html>
